@@ -149,7 +149,7 @@ def llm_output(llm_response):
     element_count = Counter(relevant_links)
     relevant_links = sorted(element_count, key=lambda x: element_count[x], reverse=True)
     #Filter for the top two URLS
-    relevant_links = relevant_links[0:3]
+    relevant_links = relevant_links[0:4]
     
     #Print our output into the chat
     fake_typing(llm_response['answer'] + '\n\nSources:\n\n' + "\n\n".join(relevant_links))
