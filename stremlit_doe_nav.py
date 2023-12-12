@@ -26,11 +26,11 @@ sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 import sqlite3
 
 #Streamlit customization items
-st.title('DOE.gov Saver Bot')
+st.title('DOE Navigator')
 st.sidebar.image('doe_nav.jpeg') #, width=200)
 st.caption('A LLM interface to explore various DOE tax incentives and energy saving advice')
 #Introduction text
-introduction_text = """Hello, I'm Energy Saver Bot! I can help you find and understand various DOE tax incentives and energy saving advice. How can I help you today?"""
+introduction_text = """Hello, I'm DOE Navigator Bot! I can help you find and understand various DOE tax incentives and energy saving advice. How can I help you today?"""
 
 #Bring in API Key
 os.environ["OPENAI_API_KEY"] = st.secrets["openai_key"]
