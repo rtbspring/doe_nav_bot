@@ -27,7 +27,7 @@ import sqlite3
 
 #Streamlit customization items
 st.title('DOE.gov Energy Saver Bot')
-st.sidebar.image('doe_nav.jpeg', width=100)
+st.sidebar.image('doe_nav.jpeg') #, width=200)
 st.caption('A LLM interface to explore various DOE tax incentives and energy saving advice')
 #Introduction text
 introduction_text = """Hello, I'm Energy Saver Bot! I can help you find and understand various DOE tax incentives and energy saving advice. How can I help you today?"""
@@ -38,7 +38,7 @@ google_api_key = json.loads(st.secrets['google_api_key'], strict=False)
 
 #Example prompts
 button_1_text = "I'm a homeowner in VA, how can I save money?"
-button_2_text = "I'm buying a vehicle and want to know if I can save some money?"
+button_2_text = "I'm buying a vehicle and want to know if I can save some money."
 button_3_text = "I'm renting an apartment, how can I save money?"
 
 
