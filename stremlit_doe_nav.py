@@ -26,7 +26,7 @@ sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 import sqlite3
 
 #Streamlit customization items
-st.title('DOE.gov Energy Saver Bot')
+st.title('DOE.gov Saver Bot')
 st.sidebar.image('doe_nav.jpeg') #, width=200)
 st.caption('A LLM interface to explore various DOE tax incentives and energy saving advice')
 #Introduction text
