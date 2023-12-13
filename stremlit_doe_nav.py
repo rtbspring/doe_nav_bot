@@ -247,8 +247,12 @@ else:
 
 # Display chat messages from history on app rerun
 for message in st.session_state.messages:
-    with st.chat_message(message["role"], avatar=icon_pic):
-        st.markdown(message["content"])
+   if message["role"] == "assistant":
+       with st.chat_message("assistant", avatar = icon_pic):
+         st.markdown(message["content"])    
+   else:
+       with st.chat_message(message["role"]):
+          st.markdown(message["content"])
 
 #______________________Langchain Setup_______________________#
 #How it works: we previously embedded the information we scraped from the DOE
