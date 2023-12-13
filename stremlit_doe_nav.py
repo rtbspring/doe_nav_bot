@@ -308,13 +308,8 @@ if st.session_state.count == 0:
     #st.write(introduction_text)
     st.session_state.messages.append({"role": "assistant", "content": introduction_text})
     
-    for message in st.session_state.messages:
-       if st.chat_message(message["role"]) == "assistant":
-            with st.chat_message("assistant", avatar = icon_pic):
-               st.markdown(message["content"])    
-       else:
-            with st.chat_message(message["role"]):
-               st.markdown(message["content"])
+    with st.chat_message("assistant", avatar = icon_pic):
+        st.markdown(introduction_text)
 
     # Create a layout with three columns
     col1, col2, col3 = st.columns(3)
