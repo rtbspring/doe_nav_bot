@@ -26,11 +26,11 @@ sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 import sqlite3
 
 #Streamlit customization items
-st.title('Economic Program Front Door')
-st.sidebar.image('doe_nav.jpeg') #, width=200)
+st.title('Reba: Your Guide to Energy Rebate and Tax Incentives')
+st.sidebar.image('reba_mascot.png') #, width=200)
 st.caption('A LLM interface to explore various DOE tax incentives and energy saving advice')
 #Introduction text
-introduction_text = """Hello, I'm Economic Program Front Door Bot! I can help you find and understand various DOE tax incentives and energy saving advice. How can I help you today?"""
+introduction_text = """Hello, I'm Reba! I can help you find and understand various DOE tax incentives and energy saving advice. How can I help you today?"""
 
 #Bring in API Key
 os.environ["OPENAI_API_KEY"] = st.secrets["openai_key"]
