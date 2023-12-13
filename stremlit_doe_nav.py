@@ -247,8 +247,12 @@ else:
 
 # Display chat messages from history on app rerun
 for message in st.session_state.messages:
-    with st.chat_message(message["role"]):
-        st.markdown(message["content"])
+   if st.chat_message(message["role"]) == "assistant":
+       with st.chat_message("assistant", avatar = icon_pic):
+         st.markdown(message["content"])    
+   else:
+       with st.chat_message(message["role"]):
+          st.markdown(message["content"])
 
 
 #______________________Langchain Setup_______________________#
@@ -298,20 +302,19 @@ qa = RetrievalQAWithSourcesChain.from_chain_type(
 
 #___________________________Application Stuff_______________________________
 
-for message in st.session_state.messages:
-   if st.chat_message(message["role"]) == "assistant":
-       with st.chat_message("assistant", avatar = icon_pic):
-         st.markdown(message["content"])    
-   else:
-       with st.chat_message(message["role"]):
-          st.markdown(message["content"])
-
-
 #Only introduce the chatbot to the user if it's their first time logging in
 if st.session_state.count == 0:
     
     #st.write(introduction_text)
     st.session_state.messages.append({"role": "assistant", "content": introduction_text})
+    
+    for message in st.session_state.messages:
+       if st.chat_message(message["role"]) == "assistant":
+            with st.chat_message("assistant", avatar = icon_pic):
+               st.markdown(message["content"])    
+       else:
+            with st.chat_message(message["role"]):
+               st.markdown(message["content"])
 
     # Create a layout with three columns
     col1, col2, col3 = st.columns(3)
