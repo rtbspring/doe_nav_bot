@@ -245,6 +245,15 @@ if model_name == "GPT-3.5":
 else:
     model = "gpt-4-1106-preview"
 
+# Display chat messages from history on app rerun
+for message in st.session_state.messages:
+   if st.chat_message(message["role"]) == "assistant":
+       with st.chat_message("assistant", avatar = icon_pic):
+         st.write(message["content"])    
+   else:
+       with st.chat_message("user"):
+          st.write(message["content"])
+
 #______________________Langchain Setup_______________________#
 #How it works: we previously embedded the information we scraped from the DOE
 #website. What we're doing now is reading in that info from a Chroma DB 
