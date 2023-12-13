@@ -247,12 +247,8 @@ else:
 
 # Display chat messages from history on app rerun
 for message in st.session_state.messages:
-   if st.chat_message(message["role"]) == "assistant":
-       with st.chat_message("assistant", avatar = "https://github.com/JackOgozaly/doe_nav_bot/blob/main/%20%20chatbot_icon.png?raw=true"):
-         st.markdown(message["content"])    
-   else:
-       with st.chat_message("user"):
-          st.markdown(message["content"])
+    with st.chat_message(message["role"], avatar=icon_pic):
+        st.markdown(message["content"])
 
 #______________________Langchain Setup_______________________#
 #How it works: we previously embedded the information we scraped from the DOE
