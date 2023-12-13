@@ -29,6 +29,9 @@ import sqlite3
 st.title('Reba: Your Guide to Energy Rebate and Tax Incentives')
 st.sidebar.image('reba_mascot.png')
 st.caption('A LLM interface to explore various DOE tax incentives and energy saving advice')
+#Chatbot icon pic
+icon_pic = "https://github.com/JackOgozaly/doe_nav_bot/blob/main/%20%20chatbot_icon.png?raw=true"
+
 #Introduction text
 introduction_text = """Hello, I'm Reba! I can help you find and understand various DOE tax incentives and energy saving advice. How can I help you today?"""
 
@@ -172,7 +175,7 @@ def chatbot(question):
        st.markdown(question)
             
     # Display assistant response in chat message container
-    with st.chat_message("assistant", avatar = "https://raw.githubusercontent.com/JackOgozaly/doe_nav_bot/main/chatbot_icon.png"):
+    with st.chat_message("assistant", avatar = icon_pic):
     
        with get_openai_callback() as cb:
              #Chat GPT response
@@ -336,7 +339,7 @@ if prompt := st.chat_input():
         st.markdown(prompt)
         
     # Display assistant response in chat message container
-    with st.chat_message("assistant", avatar = "https://raw.githubusercontent.com/JackOgozaly/doe_nav_bot/main/chatbot_icon.png"):
+    with st.chat_message("assistant", avatar = "icon_pic"):
 
         with get_openai_callback() as cb:
             #Chat GPT response
