@@ -26,7 +26,8 @@ sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 import sqlite3
 
 #Streamlit customization items
-st.title('Reba: Your Guide to Energy Rebate and Tax Incentives')
+st.title('Reba')
+st.subheader("Your Guide to Energy Rebate and Tax Incentives')
 st.sidebar.image('reba_mascot.png')
 st.caption('A LLM interface to explore various DOE tax incentives and energy saving advice')
 #Chatbot icon pic
