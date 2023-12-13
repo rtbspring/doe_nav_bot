@@ -308,8 +308,9 @@ if st.session_state.count == 0:
         if st.chat_message(message["role"]) == "assistant":
             with st.chat_message("assistant", avatar = icon_pic):
                  st.markdown(message["content"])    
-        else st.chat_message(message["role"]):
-            st.markdown(message["content"])
+        else:
+             with st.chat_message(message["role"]):
+                  st.markdown(message["content"])
 
     # Create a layout with three columns
     col1, col2, col3 = st.columns(3)
