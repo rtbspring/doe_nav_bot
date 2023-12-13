@@ -305,7 +305,10 @@ if st.session_state.count == 0:
     st.session_state.messages.append({"role": "assistant", "content": introduction_text})
     
     for message in st.session_state.messages:
-        with st.chat_message(message["role"]):
+        if st.chat_message(message["role"]) == "assistant":
+            with st.chat_message("assistant", avatar = icon_pic):
+                 st.markdown(message["content"])    
+        else st.chat_message(message["role"]):
             st.markdown(message["content"])
 
     # Create a layout with three columns
@@ -342,7 +345,7 @@ if prompt := st.chat_input():
         st.markdown(prompt)
         
     # Display assistant response in chat message container
-    with st.chat_message("assistant", avatar = "icon_pic"):
+    with st.chat_message("assistant", avatar = icon_pic):
 
         with get_openai_callback() as cb:
             #Chat GPT response
