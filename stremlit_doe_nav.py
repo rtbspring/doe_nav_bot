@@ -324,12 +324,15 @@ st.session_state.count += 1
 
 if st.session_state.clicked1:
     chatbot(button_1_text)
+    st.session_state.clicked1 = False
 
 if st.session_state.clicked2:
     chatbot(button_2_text)
+    st.session_state.clicked2 = False
 
 if st.session_state.clicked3:
     chatbot(button_3_text)
+    st.session_state.clicked3 = False
 
 if prompt := st.chat_input():         
     # Add user message to chat history
