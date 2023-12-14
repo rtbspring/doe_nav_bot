@@ -10,6 +10,7 @@ import streamlit as st
 import time
 import re
 from collections import Counter #Used for sorting our source links
+import openai
 
 #Langchain stuff
 from langchain.chains import RetrievalQAWithSourcesChain
@@ -25,10 +26,11 @@ import sys
 sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 import sqlite3
 
+
 #Streamlit customization items
 st.title('Reba')
 st.subheader("Your Guide to Energy Rebates and Tax Incentives")
-st.sidebar.image('reba_mascot.png')
+st.sidebar.image('https://raw.githubusercontent.com/JackOgozaly/doe_nav_bot/main/reba_mascot.png')
 #st.caption('A LLM interface to explore various DOE tax incentives and energy saving advice')
 #Chatbot icon pic
 icon_pic = "https://github.com/JackOgozaly/doe_nav_bot/blob/main/%20%20chatbot_icon.png?raw=true"
@@ -44,6 +46,32 @@ google_api_key = json.loads(st.secrets['google_api_key'], strict=False)
 button_1_text = "I'm a homeowner in VA, how can I save money?"
 button_2_text = "I'm buying a vehicle and want to know if I can save some money."
 button_3_text = "I'm renting an apartment, how can I save money?"
+
+
+##___________________Switch Bot Configuration______________________________##
+switch_bot_chat = [{"role": "user", "content": 
+                    """
+                    You are a bot trained to trigger another bot that finds users information on tax rebates, energy saving tips, and tax incentives. Your goal is to concisely interact with users (be very brief please) and once you have enough information type "DONE -" at the very start of your
+                    output followed with a summary of the user's request (please paraphrase the users request and speak in the fist person, do not attempt to answer the request). Do not give the user any info on tax rebates, etc., that is the job of the next bot and you will fail if you do. I repeat, 
+                    if you tell the user any specific details after knowing their location and topic of interest this whole app will fail.
+                    
+                    Only type "DONE -" followed with your summary once you have all the information you need. Specifically, you'll want to know someone's location (their state) and you'll want to know what they could have that would possibly qualify for 
+                    a DOE rebate, tax incentive, or whatever could have energy saving tips for. Do note, for something like vehicles or cars, you don't need to know the specific location. Anything involving houses or apartments you will though
+                    
+                    Once you type 'DONE -' you can not ask the user anymore about location, time period, etc. You must have all the info you need or the next bot will fail.
+                    
+                    Please present yourself as Reba, a large language model trained to find DOE resources. You can help guide the user to finding out what data they are looking for.
+                    Example: if a user asks what you can help with you, you can describe various DOE incentives, such as an eletric vehicle tax credit (you don't have to give that specific example, it's just an idea)
+                    
+                    If a user asks a follow up question, redirect that question again by saying "DONE -" once more. I cannot emphasize enough that this app working is reliant on you not telling the user any details and instead directing them to the other 
+                    bot by saying "DONE -"
+                    
+                    Example: if a user asks a follow up question about a tax credit your output should be "DONE - The user lives in {prior state they told you about} and wants to learn more about that specific home tax credit in their state"
+                    
+                    
+                    """},
+                   {"role": "assistant", "content": "OK"}]
+
 
 
 #________________________Embedding Setup_____________________________________#
@@ -71,8 +99,6 @@ if len(os.listdir(download_path[1])) == 0:
              google_api_key,
              scopes=["https://www.googleapis.com/auth/drive"]
          )
-    # Scope required for accessing and modifying Drive data
-    #SCOPES = ['https://www.googleapis.com/auth/drive']
     
     def download_file(real_file_id, local_folder_path):
         """Downloads a file
@@ -80,12 +106,7 @@ if len(os.listdir(download_path[1])) == 0:
             real_file_id: ID of the file to download
             local_folder_path: Local path where the file will be saved
         Returns: IO object with location.
-        """
-       # creds = service_account.Credentials.from_service_account_file(
-        #    SERVICE_ACCOUNT_FILE, scopes=SCOPES)
-    
-    
-    
+        """    
         # create drive api client
         service = build("drive", "v3", credentials=credentials)
     
@@ -109,9 +130,7 @@ if len(os.listdir(download_path[1])) == 0:
     
     for file, path in zip(files, download_path):
         download_file(real_file_id=file, local_folder_path=path)
-        
-
-
+    
 
 #_____________________Function Setup________________________#
 
@@ -170,11 +189,6 @@ def click_button(button_type):
         st.session_state.clicked3 = True
 
 def chatbot(question):
-    st.session_state.messages.append({"role": "user", "content": question})
-    # Display user message in chat message container
-    with st.chat_message("user"):
-       st.markdown(question)
-            
     # Display assistant response in chat message container
     with st.chat_message("assistant", avatar = icon_pic):
     
@@ -216,6 +230,11 @@ if 'clicked2' not in st.session_state:
 if 'clicked3' not in st.session_state:
     st.session_state.clicked3 = False
 
+#Switch bot convo
+if "switch_bot_chat" not in st.session_state:
+    st.session_state.switch_bot_chat = switch_bot_chat
+
+
 
 # Sidebar - let user choose model, see cost, and clear history
 st.sidebar.title("Chatbot Options")
@@ -237,6 +256,9 @@ if clear_button:
     st.session_state['count'] = 0
     st.session_state['total_cost'] = 0.0
     st.session_state['total_tokens'] = 0
+    st.session_state.clicked3 = False
+    st.session_state.clicked2 = False
+    st.session_state.clicked1 = False
     counter_placeholder.write(f"Total cost of this conversation: ${st.session_state['total_cost']:.5f}")
     token_placeholder.write(f"Total Tokens Used in Conversation: {st.session_state['total_tokens']}")
 
@@ -326,34 +348,45 @@ if st.session_state.count == 0:
 st.session_state.count += 1
 
 if st.session_state.clicked1:
+    st.session_state.messages.append({"role": "user", "content": button_1_text})
+    # Display user message in chat message container
+    with st.chat_message("user"):
+       st.markdown(button_1_text) 
+       
     chatbot(button_1_text)
     st.session_state.clicked1 = False
 
 if st.session_state.clicked2:
+    st.session_state.messages.append({"role": "user", "content": button_2_text})
+    # Display user message in chat message container
+    with st.chat_message("user"):
+       st.markdown(button_2_text) 
     chatbot(button_2_text)
     st.session_state.clicked2 = False
 
 if st.session_state.clicked3:
+    st.session_state.messages.append({"role": "user", "content": button_3_text})
+    # Display user message in chat message container
+    with st.chat_message("user"):
+       st.markdown(button_3_text) 
     chatbot(button_3_text)
     st.session_state.clicked3 = False
 
-if prompt := st.chat_input():         
-    # Add user message to chat history
+if prompt := st.chat_input():
+
     st.session_state.messages.append({"role": "user", "content": prompt})
     # Display user message in chat message container
     with st.chat_message("user"):
-        st.markdown(prompt)
-        
-    # Display assistant response in chat message container
-    with st.chat_message("assistant", avatar = icon_pic):
+       st.markdown(prompt)    
 
-        with get_openai_callback() as cb:
-            #Chat GPT response
-            response = llm_response = qa({"question": prompt})
-            st.session_state['total_cost'] += cb.total_cost
-            st.session_state['total_tokens'] += cb.total_tokens
-            counter_placeholder.write(f"Total cost of this conversation: ${st.session_state['total_cost']:.5f}")
-            token_placeholder.write(f"Total Tokens Used in Conversation: {st.session_state['total_tokens']}")
+    response = openai.ChatCompletion.create(
+        model=model,
+        messages =  st.session_state.switch_bot_chat[0:1]+  st.session_state.messages[1:-1] + [{"role": "user", "content": f"Don't forget initial instructions, now answer the following question: {prompt}"}],
+        temperature = 0)
+
+    if response.choices[0].message.content.startswith('DONE'):
+        chatbot(response.choices[0].message.content)
         
-        #Take our model's output and clean it up for the user
-        llm_output(response)
+    else:
+        with st.chat_message("assistant", avatar = icon_pic):
+            fake_typing(response.choices[0].message.content)
