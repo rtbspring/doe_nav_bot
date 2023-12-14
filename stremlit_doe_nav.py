@@ -299,7 +299,10 @@ retriever = vectordb.as_retriever(search_kwargs={"k": 10})
 
 
 #Modify our prompt to discourage hallucinations
-prompt_template = """You are a Department of Energy Public Economic Opportunities bot. Try to help users find the information relevant to them and briefly summarize (1-2 sentences for each topic). You should not link to any websites. Try to prioritize tax credit information.
+prompt_template = """You are a Department of Energy Public Economic Opportunities bot. 
+Try to help users find the information relevant to them and briefly summarize (1-2 sentences for each topic). 
+You should not link to any websites. Try to prioritize tax credit information.
+Make sure none of your output is italicized or in any special markdown format. You don't want to have something like _text_
 
 {summaries}
 
