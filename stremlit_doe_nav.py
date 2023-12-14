@@ -27,9 +27,9 @@ import sqlite3
 
 #Streamlit customization items
 st.title('Reba')
-st.subheader("Your Guide to Energy Rebate and Tax Incentives")
+st.subheader("Your Guide to Energy Rebates and Tax Incentives")
 st.sidebar.image('reba_mascot.png')
-st.caption('A LLM interface to explore various DOE tax incentives and energy saving advice')
+#st.caption('A LLM interface to explore various DOE tax incentives and energy saving advice')
 #Chatbot icon pic
 icon_pic = "https://github.com/JackOgozaly/doe_nav_bot/blob/main/%20%20chatbot_icon.png?raw=true"
 
