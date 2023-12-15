@@ -150,9 +150,9 @@ def fake_typing(text):
         time.sleep(0.05)
         # Add a blinking cursor to simulate typing
         if index != len(re.findall(r"\w+|\s+|\n|[^\w\s]", text)) - 1:
-            message_placeholder.text(full_response + "▌")
+            message_placeholder.markdown(full_response + "▌")
         else:
-            message_placeholder.text(full_response)
+            message_placeholder.markdown(full_response)
     # Add assistant response to chat history
     st.session_state.messages.append({"role": "assistant", "content": full_response})
 
@@ -175,7 +175,7 @@ def llm_output(llm_response):
     relevant_links = relevant_links[0:4]
     
     #Print our output into the chat
-    fake_typing(llm_response['answer'] + '\n\nSources:\n\n' + "\n\n".join(relevant_links))
+    fake_typing(llm_response['answer'].relace('_', '') + '\n\nSources:\n\n' + "\n\n".join(relevant_links))
 
 def click_button(button_type):
     '''
@@ -272,10 +272,10 @@ else:
 for message in st.session_state.messages:
    if message["role"] == "assistant":
        with st.chat_message("assistant", avatar = icon_pic):
-         st.text(message["content"])    
+         st.markdown(message["content"])    
    else:
        with st.chat_message(message["role"]):
-          st.text(message["content"])
+          st.markdown(message["content"])
 
 #______________________Langchain Setup_______________________#
 #How it works: we previously embedded the information we scraped from the DOE
@@ -355,7 +355,7 @@ if st.session_state.clicked1:
     st.session_state.messages.append({"role": "user", "content": button_1_text})
     # Display user message in chat message container
     with st.chat_message("user"):
-       st.text(button_1_text) 
+       st.markdown(button_1_text) 
        
     chatbot(button_1_text)
     st.session_state.clicked1 = False
@@ -364,7 +364,7 @@ if st.session_state.clicked2:
     st.session_state.messages.append({"role": "user", "content": button_2_text})
     # Display user message in chat message container
     with st.chat_message("user"):
-       st.text(button_2_text) 
+       st.markdown(button_2_text) 
     chatbot(button_2_text)
     st.session_state.clicked2 = False
 
@@ -372,7 +372,7 @@ if st.session_state.clicked3:
     st.session_state.messages.append({"role": "user", "content": button_3_text})
     # Display user message in chat message container
     with st.chat_message("user"):
-       st.text(button_3_text) 
+       st.markdown(button_3_text) 
     chatbot(button_3_text)
     st.session_state.clicked3 = False
 
@@ -381,7 +381,7 @@ if prompt := st.chat_input():
     st.session_state.messages.append({"role": "user", "content": prompt})
     # Display user message in chat message container
     with st.chat_message("user"):
-       st.text(prompt)    
+       st.markdown(prompt)    
 
     response = openai.ChatCompletion.create(
         model=model,
