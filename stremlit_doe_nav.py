@@ -175,7 +175,7 @@ def llm_output(llm_response):
     relevant_links = relevant_links[0:4]
     
     #Print our output into the chat
-    fake_typing(llm_response['answer'].replace('_', '') + '\n\nSources:\n\n' + "\n\n".join(relevant_links))
+    fake_typing(llm_response['answer'] + '\n\nSources:\n\n' + "\n\n".join(relevant_links))
 
 def click_button(button_type):
     '''
@@ -303,7 +303,11 @@ prompt_template = """You are a Department of Energy Public Economic Opportunitie
 Try to help users find the information relevant to them and briefly summarize (1-2 sentences for each topic). 
 You should not link to any websites. Try to prioritize tax credit information.
 Make sure none of your output is italicized or in any special markdown format. You don't want to have something like '_text_'
-If you do have any special formatting, you will fail and the markdown document will look silly. Here are the relevant resources for you:
+Remember, In LaTeX, text and math are treated differently, so you need to indicate that you're using math. Specifically, surround your math by $ signs.
+
+If you want display math, meaning that the formula should be on its own line, then you should indicate it like this: \[ (math goes here) \]. Keep this in mind when you're displaying numbers.
+
+Here are the relevant resources for you:
 
 {summaries}
 
