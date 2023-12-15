@@ -175,7 +175,7 @@ def llm_output(llm_response):
     relevant_links = relevant_links[0:4]
     
     #Print our output into the chat
-    fake_typing(llm_response['answer'].relace('_', '') + '\n\nSources:\n\n' + "\n\n".join(relevant_links))
+    fake_typing(llm_response['answer'].replace('_', '') + '\n\nSources:\n\n' + "\n\n".join(relevant_links))
 
 def click_button(button_type):
     '''
