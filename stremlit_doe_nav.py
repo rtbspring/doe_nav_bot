@@ -303,9 +303,7 @@ prompt_template = """You are a Department of Energy Public Economic Opportunitie
 Try to help users find the information relevant to them and briefly summarize (1-2 sentences for each topic). 
 You should not link to any websites. Try to prioritize tax credit information.
 Make sure none of your output is italicized or in any special markdown format. You don't want to have something like '_text_'
-Remember, In LaTeX, text and math are treated differently, so you need to indicate that you're using math. Specifically, surround your math by $ signs.
-
-If you want display math, meaning that the formula should be on its own line, then you should indicate it like this: \[ (math goes here) \]. Keep this in mind when you're displaying numbers.
+DO NOT, UNDER ANY CIRCUMSTANCE, FORMAT NUMBERS IN LATEX FORMULA FORMAT. JUST PRINT THEM OUT AS TEXT.
 
 Here are the relevant resources for you:
 
