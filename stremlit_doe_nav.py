@@ -173,9 +173,8 @@ def llm_output(llm_response):
     relevant_links = sorted(element_count, key=lambda x: element_count[x], reverse=True)
     #Filter for the top two URLS
     relevant_links = relevant_links[0:4]
-    st.text(llm_response['answer'])
     #Print our output into the chat
-    fake_typing(llm_response['answer'] + '\n\nSources:\n\n' + "\n\n".join(relevant_links))
+    fake_typing(llm_response['answer'].replace("$", "\$") + '\n\nSources:\n\n' + "\n\n".join(relevant_links))
 
 def click_button(button_type):
     '''
