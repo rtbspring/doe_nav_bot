@@ -40,6 +40,7 @@ introduction_text = """Hello, I'm Reba! I can help you find and understand vario
 
 #Bring in API Key
 os.environ["OPENAI_API_KEY"] = st.secrets["openai_key"]
+openai.api_key = st.secrets["openai_key"]
 google_api_key = json.loads(st.secrets['google_api_key'], strict=False)
 
 #Example prompts
